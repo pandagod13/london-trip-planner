@@ -3,7 +3,7 @@
 import requests
 import math
 
-GOOGLE_API_KEY = "AIzaSyCWqqJyD_7N7uQsfoajJRARmdvy-MXEvAA"
+GOOGLE_API_KEY = ""
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
