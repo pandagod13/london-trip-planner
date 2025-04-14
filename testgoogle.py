@@ -1,9 +1,8 @@
-
-
 import requests
 import math
+import os
 
-GOOGLE_API_KEY = "AIzaSyCWqqJyD_7N7uQsfoajJRARmdvy-MXEvAA"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
@@ -62,4 +61,4 @@ for place in sorted_places[:5]:
     print(f"  Type: {types}")
     print(f"  Open: {open_now}")
     print(f"  ~{int(distance)}m away\n")
-    
+
