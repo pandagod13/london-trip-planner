@@ -46,6 +46,10 @@ class location():
         except requests.RequestException as e:
             print(f"Error: unable to complete the request. {e}")
 
+    def get_location(self):
+        self.location_name = input("Enter location :")
+        return self.location_name
+
 
 user_location = location()
-user_location.get_coordinates("big ben")
+user_location.get_coordinates(user_location.get_location())
