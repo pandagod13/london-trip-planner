@@ -34,7 +34,8 @@ class location():
                         location = data["results"][0]["geometry"]["location"]
                         self.lat = location["lat"] 
                         self.lng = location["lng"]  
-                        print(f"coordinates for {location_name}: Latitude = {self.lat} Longitude = {self.lng} ")
+                        location = [self.lat, self.lng]
+                        print(f"coordinates for {location_name}: Latitude = {self.lat} Longitude = {self.lng} {location} ")
                     else:
                         print("No results found")
                 except json.JSONDecodeError:
@@ -45,11 +46,46 @@ class location():
                 print("raw response text", response.text)
         except requests.RequestException as e:
             print(f"Error: unable to complete the request. {e}")
+        return location
 
     def get_location(self):
         self.location_name = input("Enter location :")
         return self.location_name
+    
+class direction():
+    def __init__(self, start, end):
+        self.current_location = start
+        self.destination = end
 
+    def get_tfl_routes(self):
+        tfl_url = f"https://api.tfl.gov.uk/journey/journeyresults/{self.current_location[0]},{self.current_location[1]}/to/{self.destination[0]},{self.destination[1]}"
+        tfl_params = { "mode": "bus, tube, overground"}
+        try:
+            response = requests.get(tfl_url, params= tfl_params)
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    if data["journeys"]:
+                        return print(json.dumps(data, indent=4)) 
+                    else:
+                        print("No results found")
+                except json.JSONDecodeError:
+                    print("Error: unable to parse JSON request.")
+                    print("raw response text", response.text)
+            else:
+                print(f"Error: received status code {response.status_code}")
+                print("raw response text", response.text)
+        except requests.RequestException as e:
+            print(f"Error: unable to complete request. {e}")
+
+        
+        
 
 user_location = location()
-user_location.get_coordinates(user_location.get_location())
+user_destination = location()
+start = user_location.get_coordinates(user_location.get_location())
+end = user_destination.get_coordinates(user_destination.get_location())
+route = direction(start,end)
+route.get_tfl_routes()
+
+
